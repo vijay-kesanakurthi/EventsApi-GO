@@ -8,15 +8,13 @@ import (
 
 type Event struct {
 	Id          int
-	Name        string
-	Description string
-	Location    string
-	DateTime    time.Time
+	Name        string    `binding:"required"`
+	Description string    `binding:"required"`
+	Location    string    `binding:"required"`
+	DateTime    time.Time `binding:"required"`
 }
 
-var events []Event
-
-func (e *Event) Save() error {
+func (event Event) Save() error {
 	insertQuery := `INSERT INTO events(name, description,location, dateTime) VALUES (?, ?, ?,?)`
 
 	stmt, err := db.DB.Prepare(insertQuery)
@@ -29,7 +27,7 @@ func (e *Event) Save() error {
 
 		}
 	}(stmt)
-	result, err := stmt.Exec(e.Name, e.Description, e.Location, e.DateTime)
+	result, err := stmt.Exec(event.Name, event.Description, event.Location, event.DateTime)
 	if err != nil {
 		return err
 	}
@@ -79,5 +77,40 @@ func GetEventByID(id int64) (*Event, error) {
 		return nil, err
 	}
 	return &event, nil
+}
 
+func UpdateEventByID(id int64, event *Event) error {
+	updateQuery := `
+		UPDATE events
+		SET name = ?, description = ?, location = ?, dateTime = ?
+		WHERE id = ?
+`
+	stmt, err := db.DB.Prepare(updateQuery)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(event.Name, event.Description, event.Location, event.DateTime, id)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+func (event Event) Delete() error {
+	deleteQuery := `DELETE FROM events WHERE id = ?`
+
+	stmt, err := db.DB.Prepare(deleteQuery)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(event.Id)
+	if err != nil {
+		return err
+	}
+	return err
 }
