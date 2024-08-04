@@ -1,4 +1,7 @@
 fileignoreconfig:
+- filename: .idea/sqldialects.xml
+  checksum: a10a96f40a1725c5999024958d1e33910c9cf29aa73cdc784aa90041ce0d2ed9
 - filename: go.sum
-  checksum: 979fe78553ed918e21088fc389565c3684b81e1d08105cad948125f874b04675
+  checksum: 3ae963b8117e451897479d2cd75693ba23c0cd4664aa7297d866214a7e45129b
 version: ""
+
