@@ -8,10 +8,11 @@ import (
 
 type Event struct {
 	Id          int
-	Name        string    `binding:"required"`
-	Description string    `binding:"required"`
-	Location    string    `binding:"required"`
-	DateTime    time.Time `binding:"required"`
+	Name        string `binding:"required"`
+	Description string `binding:"required"`
+	Location    string `binding:"required"`
+	DateTime    time.Time
+	UserId      int
 }
 
 func (event Event) Save() error {
@@ -38,7 +39,7 @@ func (event Event) Save() error {
 }
 
 func GetAllEvents() ([]Event, error) {
-	selectQuery := `SELECT * FROM events`
+	selectQuery := `SELECT id,name,description,location,dateTime FROM events`
 
 	rows, err := db.DB.Query(selectQuery)
 	if err != nil {
