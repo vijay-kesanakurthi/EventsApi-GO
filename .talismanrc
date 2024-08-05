@@ -1,8 +1,11 @@
 fileignoreconfig:
-- filename: .idea/sqldialects.xml
-  checksum: 48e88bd81083e8a9044f10bded5299a5fd3077863770aa97d4dff41f0d9aeae8
+- filename: go.sum
+  checksum: 341eac42735644cd731c8bcdd08a6e71f0e3e85f06d4ab743c64cd0f8eaf7862
+- filename: util/jwt.go
+  checksum: ff7f371cc43d21530fc6e4f69113ccff57f0bd467a27af019139bb55b61cf949
 - filename: models/user.go
-  checksum: eca29894c0f027948aa6439f266541694b0d0e04d8bc5adc6c054147633359e6
+  checksum: db96a7ca68da4c6b69e51869d13020ea6be9c254e8476bd3ed05e1dae910e1be
 - filename: util/hash.go
-  checksum: 8840d01c4fedc2e425f49b8ad98e95be5595085793fa0022f2c050568a6a9662
+  checksum: bfa4b12cdef99bcf08f948548c5f12eda48e8e8a82bb987026b0d7f1853936ca
 version: ""
+
