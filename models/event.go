@@ -16,7 +16,7 @@ type Event struct {
 }
 
 func (event Event) Save() error {
-	insertQuery := `INSERT INTO events(name, description,location, dateTime) VALUES (?, ?, ?,?)`
+	insertQuery := `INSERT INTO events(name, description,location, dateTime,userId) VALUES (?, ?, ?,?,?)`
 
 	stmt, err := db.DB.Prepare(insertQuery)
 	if err != nil {
@@ -28,7 +28,7 @@ func (event Event) Save() error {
 
 		}
 	}(stmt)
-	result, err := stmt.Exec(event.Name, event.Description, event.Location, event.DateTime)
+	result, err := stmt.Exec(event.Name, event.Description, event.Location, event.DateTime, event.UserId)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (event Event) Save() error {
 }
 
 func GetAllEvents() ([]Event, error) {
-	selectQuery := `SELECT id,name,description,location,dateTime FROM events`
+	selectQuery := `SELECT id,name,description,location,dateTime,userId FROM events`
 
 	rows, err := db.DB.Query(selectQuery)
 	if err != nil {
@@ -51,7 +51,7 @@ func GetAllEvents() ([]Event, error) {
 
 	for rows.Next() {
 		var event Event
-		err := rows.Scan(&event.Id, &event.Name, &event.Description, &event.Location, &event.DateTime)
+		err := rows.Scan(&event.Id, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserId)
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +73,7 @@ func GetEventByID(id int64) (*Event, error) {
 	defer query.Close()
 
 	query.Next()
-	err = query.Scan(&event.Id, &event.Name, &event.Description, &event.Location, &event.DateTime)
+	err = query.Scan(&event.Id, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserId)
 	if err != nil {
 		return nil, err
 	}

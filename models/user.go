@@ -27,7 +27,7 @@ func (user User) Save() error {
 	return err
 }
 
-func (user User) Validate() error {
+func Validate(user *User) error {
 	findUserQuery := `SELECT * FROM users WHERE email = ?`
 
 	var actualUser User
@@ -42,6 +42,7 @@ func (user User) Validate() error {
 	if err != nil {
 		return err
 	}
+	user.Id = actualUser.Id
 
 	result := util.ComparePasswords(actualUser.Password, user.Password)
 	if result == false {

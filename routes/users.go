@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"rest-api/models"
@@ -30,11 +31,12 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	err = user.Validate()
+	err = models.Validate(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user credentials"})
 		return
 	}
+	fmt.Println(user)
 	token, err := util.GenerateToken(user.Email, user.Id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

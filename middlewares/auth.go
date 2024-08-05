@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"net/http"
@@ -13,7 +14,7 @@ func AuthMiddleware(context *gin.Context) {
 		context.AbortWithStatus(http.StatusUnauthorized)
 	}
 
-	token, err := util.VerfyToken(authHeader)
+	token, err := util.VerifyToken(authHeader)
 	if err != nil {
 		context.AbortWithStatus(http.StatusUnauthorized)
 		return
@@ -24,6 +25,7 @@ func AuthMiddleware(context *gin.Context) {
 	}
 
 	userId := claims["user_id"].(float64)
+	fmt.Println("userId", claims)
 
 	context.Set("userId", int(userId))
 

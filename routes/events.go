@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"rest-api/models"
@@ -30,6 +31,11 @@ func createEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	userId := ctx.GetInt("userId")
+	event.UserId = userId
+	println(event.UserId)
+	fmt.Println(event.UserId)
+	fmt.Print(userId)
 	err = event.Save()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -60,6 +66,13 @@ func updateEvent(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	userId := context.GetInt("userId")
+
+	if event.UserId != userId {
+		context.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized user"})
+		return
+	}
+
 	err = models.UpdateEventByID(id, &event)
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -78,15 +91,21 @@ func deleteEvent(ctx *gin.Context) {
 	event, err := models.GetEventByID(id)
 
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Cannot find event"})
+		return
+	}
+	userId := ctx.GetInt("userId")
+
+	if event.UserId != userId {
+		ctx.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized user"})
 		return
 	}
 
 	err = event.Delete()
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Cannot delete event"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"message": "delete event"})
+	ctx.JSON(http.StatusOK, gin.H{"message": "Event deleted"})
 
 }

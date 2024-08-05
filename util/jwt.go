@@ -2,6 +2,7 @@ package util
 
 import (
 	"errors"
+	"fmt"
 	"github.com/golang-jwt/jwt"
 	"time"
 )
@@ -10,6 +11,7 @@ var secretKey string = "SuperSecretKey"
 
 func GenerateToken(username string, userId int) (string, error) {
 
+	fmt.Println("UserID:   ", userId)
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
 		"user_id":  userId,
@@ -22,7 +24,7 @@ func GenerateToken(username string, userId int) (string, error) {
 	return token, nil
 }
 
-func VerfyToken(token string) (*jwt.Token, error) {
+func VerifyToken(token string) (*jwt.Token, error) {
 	jwtToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secretKey), nil
 	})
