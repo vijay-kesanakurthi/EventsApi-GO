@@ -16,7 +16,7 @@ type Event struct {
 }
 
 func (event Event) Save() error {
-	insertQuery := `INSERT INTO events(name, description,location, dateTime,userId) VALUES (?, ?, ?,?,?)`
+	insertQuery := `INSERT INTO events(name, description,location, dateTime,UserId) VALUES (?, ?, ?,?,?)`
 
 	stmt, err := db.DB.Prepare(insertQuery)
 	if err != nil {
@@ -39,7 +39,7 @@ func (event Event) Save() error {
 }
 
 func GetAllEvents() ([]Event, error) {
-	selectQuery := `SELECT id,name,description,location,dateTime,userId FROM events`
+	selectQuery := `SELECT id,name,description,location,dateTime,UserId FROM events`
 
 	rows, err := db.DB.Query(selectQuery)
 	if err != nil {
@@ -114,4 +114,15 @@ func (event Event) Delete() error {
 		return err
 	}
 	return err
+}
+
+func (event Event) Register(userId int) error {
+	insertQuery := `INSERT INTO registrations(userId,eventId) VALUES(?,?)`
+
+	_, err := db.DB.Exec(insertQuery, userId, event.Id)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }

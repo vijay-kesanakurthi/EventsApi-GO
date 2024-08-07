@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"rest-api/models"
@@ -33,16 +32,13 @@ func createEvent(ctx *gin.Context) {
 	}
 	userId := ctx.GetInt("userId")
 	event.UserId = userId
-	println(event.UserId)
-	fmt.Println(event.UserId)
-	fmt.Print(userId)
 	err = event.Save()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	ctx.JSON(http.StatusCreated, gin.H{
-		"message": "create event",
+		"message": "event created",
 	})
 }
 func getEvents(c *gin.Context) {

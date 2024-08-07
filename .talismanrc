@@ -7,5 +7,7 @@ fileignoreconfig:
   checksum: db96a7ca68da4c6b69e51869d13020ea6be9c254e8476bd3ed05e1dae910e1be
 - filename: util/hash.go
   checksum: bfa4b12cdef99bcf08f948548c5f12eda48e8e8a82bb987026b0d7f1853936ca
+- filename: .idea/sqldialects.xml
+  checksum: 78dd41d5a8476c15f663bfbc49eddd62b269a25a81218b7af4e73216b8ecc06f
 version: ""
 
