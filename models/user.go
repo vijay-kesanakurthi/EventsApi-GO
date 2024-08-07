@@ -6,9 +6,14 @@ import (
 )
 
 type User struct {
-	Id       int
-	Email    string `binding:"required"`
-	Password string `binding:"required"`
+	Id       int    `json:"id" `
+	Email    string `binding:"required" json:"email"`
+	Password string `binding:"required" json:"password"`
+}
+
+type UserModel struct {
+	Email    string `binding:"required" json:"email"`
+	Password string `binding:"required" json:"password"`
 }
 
 func (user User) Save() error {

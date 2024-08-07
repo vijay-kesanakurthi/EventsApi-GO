@@ -1,0 +1,307 @@
+definitions:
+  models.Event:
+    properties:
+      dateTime:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      location:
+        type: string
+      name:
+        type: string
+      userId:
+        type: integer
+    required:
+    - description
+    - location
+    - name
+    type: object
+  models.EventModel:
+    properties:
+      dateTime:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+    required:
+    - description
+    - location
+    - name
+    type: object
+  models.RegistrationsData:
+    properties:
+      event_description:
+        type: string
+      event_id:
+        type: integer
+      event_name:
+        type: string
+      id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  models.UserModel:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+info:
+  contact: {}
+paths:
+  /events/:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Event'
+            type: array
+      summary: Get all events
+      tags:
+      - Events
+    post:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: event
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/models.EventModel'
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema: {}
+      security:
+      - bearerAuth: []
+      summary: Create event
+      tags:
+      - Events
+  /events/{id}:
+    delete:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: event id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "403":
+          description: Forbidden
+          schema: {}
+        "404":
+          description: Not Found
+          schema: {}
+      security:
+      - bearerAuth: []
+      summary: Delete event
+      tags:
+      - Events
+    get:
+      parameters:
+      - description: event id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Event'
+        "403":
+          description: Forbidden
+          schema: {}
+        "404":
+          description: Not Found
+          schema: {}
+      summary: Get event by id
+      tags:
+      - Events
+    put:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: event id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: event
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/models.EventModel'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Event'
+            type: array
+        "403":
+          description: Forbidden
+          schema: {}
+      security:
+      - bearerAuth: []
+      summary: Update event
+      tags:
+      - Events
+  /events/{id}/deregister:
+    delete:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: registration id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema: {}
+        "401":
+          description: Unauthorized
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      security:
+      - bearerAuth: []
+      summary: Delete registration
+      tags:
+      - Events
+  /events/{id}/register:
+    post:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: event id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema: {}
+      security:
+      - bearerAuth: []
+      summary: Register event
+      tags:
+      - Events
+  /login:
+    post:
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserModel'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema: {}
+      summary: Login
+      tags:
+      - Users
+  /registrations:
+    get:
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: registration id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.RegistrationsData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Get registrations
+      tags:
+      - Events
+  /signup:
+    post:
+      parameters:
+      - description: User details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserModel'
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema: {}
+      summary: Create user
+      tags:
+      - Users
+swagger: "2.0"

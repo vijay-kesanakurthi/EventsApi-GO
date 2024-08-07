@@ -7,6 +7,14 @@ import (
 	"strconv"
 )
 
+// @Summary Register event
+// @Tags Events
+// @Security bearerAuth
+// @Param Authorization header string true "Bearer token"
+// @Param id path int true "event id"
+// @Router /events/{id}/register [post]
+// @Success      200 {object} string
+// @Failure     400  {object}  error
 func registerEvent(ctx *gin.Context) {
 	eventId, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	userId := ctx.GetInt("userId")
@@ -29,6 +37,16 @@ func registerEvent(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Successfully registered"})
 }
 
+// @Summary Delete registration
+// @Tags Events
+// @Security bearerAuth
+// @Param Authorization header string true "Bearer token"
+// @Param id path int true "registration id"
+// @Router /events/{id}/deregister [delete]
+// @Success      200 {object} string
+// @Failure     400  {object}  error
+// @Failure     401  {object}  error
+// @Failure     500  {object}  error
 func deleteRegistration(ctx *gin.Context) {
 	regId, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
@@ -54,6 +72,13 @@ func deleteRegistration(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Successfully deleted registration"})
 }
 
+// @Summary Get registrations
+// @Tags Events
+// @Param Authorization header string true "Bearer token"
+// @Param id path int true "registration id"
+// @Router /registrations [get]
+// @Success      200 {object} []models.RegistrationsData
+// @Failure     500  {object}  error
 func getRegistrations(ctx *gin.Context) {
 	allRegistrations, err := models.FindAllRegistrations()
 	if err != nil {

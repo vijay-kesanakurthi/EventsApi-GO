@@ -7,12 +7,19 @@ import (
 )
 
 type Event struct {
-	Id          int
-	Name        string `binding:"required"`
-	Description string `binding:"required"`
-	Location    string `binding:"required"`
-	DateTime    time.Time
-	UserId      int
+	Id          int       `json:"id"`
+	Name        string    `binding:"required" json:"name"`
+	Description string    `binding:"required"  json:"description"`
+	Location    string    `binding:"required" json:"location"`
+	DateTime    time.Time `json:"dateTime"`
+	UserId      int       `json:"userId"`
+}
+
+type EventModel struct {
+	Name        string    `binding:"required" json:"name"`
+	Description string    `binding:"required"  json:"description"`
+	Location    string    `binding:"required" json:"location"`
+	DateTime    time.Time `json:"dateTime"`
 }
 
 func (event Event) Save() error {
